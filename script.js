@@ -1,5 +1,4 @@
 const pg = require('pg');
-
 const main = async () => {
     const client = new pg.Client({
         user: 'user',
@@ -15,7 +14,7 @@ const main = async () => {
     const clustredProductTable = 'clustred_product';
 
     // insert data to tables
-    // await insertDataToTables(normalProductTable, clustredProductTable, client);
+    await insertDataToTables(normalProductTable, clustredProductTable, client);
 
     // get the size of the tables
     await getPostgresRecordSize(normalProductTable, client);
@@ -27,19 +26,16 @@ const main = async () => {
     await createIndex(clustredProductTable, 'rating', client);
     await setClusteredIndex(clustredProductTable, 'rating', client);
     await runAnalyze(client);
-    // bring down the shared buffer size to 20MB
-    // await setPostgresSharedBufferSize(client, '20MB');
 
 
     console.log('Start Querying');
     // run range queries on both tables
-    // await runRangeQueriesOnBothTables(client, true);
-    // await runRangeQueriesOnBothTables(client, false);
+    await runRangeQueriesOnBothTables(client, true);
+    await runRangeQueriesOnBothTables(client, false);
 
     // run range queries on both tables with explain
     await runRangeQueriesOnBothTablesExplain(client, true);
     await runRangeQueriesOnBothTablesExplain(client, false);
-
 };
 
 main().then(() => process.exit(0)).catch((error) => { console.error(error); process.exit(1); });
