@@ -13,3 +13,9 @@ services:
         limits:
           cpus: '0.5'
           memory: 512M
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+    command: ["postgres", "-c", "shared_buffers=20MB"]
+
+volumes:
+  postgres_data:
